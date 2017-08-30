@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="author" content="ItsOkayItsOfficial">
+    <link rel="shortcut icon" href="assets/img/logo.png">
+
+    <title>Project #1</title>
+
+    <!-- Bootstrap CSS 3.3.7 -->
+    <link rel="stylesheet" href="https://bootswatch.com/simplex/bootstrap.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<body>
+
+    <!-- Jumbo -->
+    <div class="container">
+        <div class="jumbotron">
+            <h1>Tutorial Search</h1>
+            <h4>Click and Search.</h4>
+        </div>
+    </div>
+    <!-- /Jumbo -->
+
+
+    <!-- Search -->
+    <nav class="navbar navbar-inverse">
+        <form class="navbar-form navbar-center">
+            <div for="searchInput" class="form-group">
+                <input type="text" class="form-control" id="searchInput" placeholder="javascript">
+            </div>
+            <button type="submit" id="searchButton" class="btn btn-default">Submit</button>
+        </form>
+    </nav>
+    <!-- /Search -->
+
+
+    <div class="container">
+
+        <!-- Search Tabs -->
+        <ul class="nav nav-tabs" id="myTabs">
+            <li class="active" data-search="javascript"><a href="#javascript" data-toggle="tab" aria-expanded="true">Javascript</a></li>
+            <li><a href="#html" data-toggle="tab">HTML</a></li>
+        </ul>
+        <!-- /Search Tabs -->
+
+
+        <!-- Search Content -->
+        <div id="myTabContent" class="tab-content">
+            <div class="tab-pane fade active in" id="javascript">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="well">
+                            <iframe width="100%" height="450px" src="https://www.youtube.com/embed/fju9ii8YsGs" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                </div> 
+                <div class="col-md-4">
+                    <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <button type="button" class="close" data-toggle="collapse" href="#collapseMeet" aria-expanded="false" aria-controls="collapseMeet">&times;</button>
+                              <h3 class="panel-title">Meetup</h3>
+                            </div>
+                            <div class="collapse" id="collapseMeet">
+                            <div class="panel-body">
+                                Meetup Content
+                            </div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                    <div class="panel panel-default">
+                            <div class="panel-body">
+                    <iframe width="100%" src="http://eloquentjavascript.net/03_functions.html#h_TcUD2vzyMe" title="iframe example 1">
+                        <p>Your browser does not support iframes.</p>
+                      </iframe>
+                    </div>
+                </div>
+            </div>
+    </div>
+
+
+            <div class="tab-pane fade" id="html">
+                <p>Icecream truck.</p>
+            </div>
+        </div>
+        <!-- /search Content -->
+
+
+    </div>
+    <!-- /.container -->
+
+    <!-- Google ajax -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!-- Bootstrap Js -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- Custom Js -->
+    <script src="assets/js/custom.js"></script>
+
+</body>
+
+</html>
