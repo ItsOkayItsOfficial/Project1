@@ -1,0 +1,44 @@
+/*
+* Author: Project #1 Fire
+* Project Name: Project Fire CSS
+* Version: Initialzed
+* Date: 08.29.17
+* URL: github.com/itsokayitsofficial/project1/
+*/
+
+
+
+/*=========
+Base Styles
+=========*/
+
+iframe {
+	border: 0;
+}
+
+/*=========
+Main
+=========*/
+
+
+/* Giphy Displays */
+
+.tab-content {
+	padding-top: 30px;
+}
+
+.show {
+	margin-right: 5px;
+	margin-left: 5px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+#subjectSearch {
+	margin: 0 auto;
+	text-align: center;
+}
+
+.subjectGiphy {
+	padding: 2px;
+}
