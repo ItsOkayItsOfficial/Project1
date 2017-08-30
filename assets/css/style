@@ -20,25 +20,15 @@ iframe {
 Main
 =========*/
 
-
-/* Giphy Displays */
-
 .tab-content {
 	padding-top: 30px;
 }
 
-.show {
-	margin-right: 5px;
-	margin-left: 5px;
-	margin-top: 5px;
-	margin-bottom: 5px;
-}
-
-#subjectSearch {
+#searchContent {
 	margin: 0 auto;
 	text-align: center;
 }
 
-.subjectGiphy {
+.content {
 	padding: 2px;
 }
