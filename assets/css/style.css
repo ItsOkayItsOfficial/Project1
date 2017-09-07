@@ -20,7 +20,6 @@ iframe {
 	border: 0;
 }
 
-
 /*=============================================
 Sitenav
 =============================================*/
@@ -164,7 +163,8 @@ iframe {
     padding: 20px;
     margin: 0;
     font-weight: 300;
-    background: white;
+		background: white;
+		height: 60px;
 }
 
 .sidebar a {

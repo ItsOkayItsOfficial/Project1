@@ -6,7 +6,6 @@
  * URL: github.com/itsokayitsofficial/project1/
  */
 
-
 // Nav Transition
 $('body').on('click', function () {
     if ($('.nav-tabs').children().length == 0) {
@@ -25,11 +24,11 @@ $('body').on('click', function () {
 $(document).on('click', 'li', function() {  
     $('li').find('nav').removeClass('active'); 
     if ($('li').find('nav').hasClass('open')) { //If sidebar of current tab is open, sidebar of newly clicked tab will also open.
-          $('li').find('nav').removeClass('open');
-          $(this).find('nav').addClass('open');
+        $('li').find('nav').removeClass('open');
+        $(this).find('nav').addClass('open');
     }
     if ($(this).hasClass('active')) {
-      $(this).find('nav').addClass('active');
+        $(this).find('nav').addClass('active');
     }
 })
 
@@ -51,6 +50,7 @@ window.onload = function() {
 $("#box").hide(100);
 $('#zipHolder').hide();//Hides on window.load
 $('#vids').hide();
+$('.sidebar-left').hide();
 
 
 //-----------------------------------------------------MeetUp Variables-------------------------------------------------------------------//
@@ -69,18 +69,18 @@ var videoSearch = '';
 //---------------------------------------------------YouTube API------------------------------------------------------------------//
     
 let getYouTube = function(){
-      videoSearch = tubeURL + "search?&q=" + topic + "&part=snippet&chart=mostPopular&videoCategoryId=27&type=video&maxResults=1&key=" + youTubeKey;
+    videoSearch = tubeURL + "search?&q=" + topic + "&part=snippet&chart=mostPopular&videoCategoryId=27&type=video&maxResults=1&key=" + youTubeKey;
 
-                $.ajax({
-                url: videoSearch,
-                method: "GET",             
-                dataType: 'jsonp'
-            })
-            .done(function(response) {
-                    var videoId = response.items[0].id.videoId;
+        $.ajax({
+        url: videoSearch,
+        method: "GET",             
+        dataType: 'jsonp'
+    })
+    .done(function(response) {
+            var videoId = response.items[0].id.videoId;
 
-            ("<iframe width='100%' height='100%' src='https://www.youtube.com/embed/" + videoId + "' frameborder='0'id='hi'></iframe>");                          
-            });
+    ("<iframe width='100%' height='100%' src='https://www.youtube.com/embed/" + videoId + "' frameborder='0'id='hi'></iframe>");                          
+    });
 };   
 
 //-----------------------------------------------------Zip Code/Search logic---------------------------------------------------------//
@@ -146,7 +146,7 @@ let displayMeetUp = function() {   //Displays up meetup on HTML, reformats unix 
       var time = results[i].time;
       var timeMoment = moment(time, 'x');
       var currentTime = timeMoment.format('LLL')
-      var sidebarId = $('#' + topic);
+      var sidebarId = $('#' + topic + 'sidebar');
 
       img.attr('src', results[i].group.photos[0].highres_link);
       img.css('width', '150px')
@@ -207,7 +207,7 @@ let displayMeetUp = function() {   //Displays up meetup on HTML, reformats unix 
             //create sidebar for each result
             var sideBar = $('<nav>');
             sideBar.addClass('sidebar sidebar-right');
-            sideBar.attr('id', topic);   
+            sideBar.attr('id', topic + 'sidebar');   
             var meetUpHeader = $('<h3>');
             meetUpHeader.css({'height': '60px', 'font-size': '14px', 'text-align': 'center'});
             meetUpHeader.text('MeetUps Near You');
@@ -222,7 +222,7 @@ let displayMeetUp = function() {   //Displays up meetup on HTML, reformats unix 
     };
 
 function sidebarStatus() {
-    var topicQuery = $('#' + topic);
+    var topicQuery = $('#' + topic + 'sidebar');
     $('li').find('nav').removeClass('active'); 
     if ($('li').find('nav').hasClass('open')) {
         ($('li').find('nav').removeClass('open'));
@@ -230,7 +230,9 @@ function sidebarStatus() {
     }
 }
 
-
+String.prototype.capitalize = function() {
+    return this.charAt(0).toUpperCase() + this.slice(1);
+}
 //---------------------------------------------------Search on click functions-------------------------------------------------------------------------//
 
 $('#searchButton').on('click', function(event) {
@@ -240,10 +242,12 @@ $('#searchButton').on('click', function(event) {
   if ($('#searchInput:text').val().trim() !== '' && $("#zipHolder").is(":visible")) { //Prevents searching if there is no input,
     $("#box").show(100);
     $("#vids").empty().show();
-    topic = $('#searchInput:text').val().trim(); //sets topic to user input, makes api call,
+    topic = $('#searchInput:text').val().trim();
+    topic = topic.capitalize();                                                     //sets topic to user input, makes api call,
     topics.push(topic);                          
     searchTab();
-    sidebarStatus();                                     
+    sidebarStatus();
+    $('.sidebar-left').show();                                     
     $('#searchInput:text').val(''); //clears search box
     getYouTube();
     getMeetUp();
