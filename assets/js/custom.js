@@ -22,6 +22,17 @@ $('body').on('click', function () {
     }
 });
 
+$(document).on('click', 'li', function() {  
+    $('li').find('nav').removeClass('active'); 
+    if ($('li').find('nav').hasClass('open')) { //If sidebar of current tab is open, sidebar of newly clicked tab will also open.
+          $('li').find('nav').removeClass('open');
+          $(this).find('nav').addClass('open');
+    }
+    if ($(this).hasClass('active')) {
+      $(this).find('nav').addClass('active');
+    }
+})
+
 // Tab Clear
 $('.nav-tabs').on("click", "button", function () {
     var anchor = $(this).siblings('a');
@@ -31,7 +42,220 @@ $('.nav-tabs').on("click", "button", function () {
 });
 
 // Sidebar Transitions
-$('.sidebar').on('click', function(event) {
-	event.preventDefault();
-	$(this).toggleClass("open");
+$(document).on('click', '.sidebar', function(event) {
+    event.preventDefault();
+    $(this).toggleClass("open");
 });
+
+window.onload = function() {
+$("#box").hide(100);
+$('#zipHolder').hide();//Hides on window.load
+$('#vids').hide();
+
+
+//-----------------------------------------------------MeetUp Variables-------------------------------------------------------------------//
+var topic = '';
+var zip = '';
+var results;
+var meetUpKey = '1a143e3f55f5e4a64664065683536';
+var queryUrl = 'https://api.meetup.com/2/open_events?key=' + meetUpKey + '&sign=true&photo-host=public&topic=' + topic + '&zip=' + zip + '&page=5&fields=next_event,time,group_photos&callback=?';
+var tryZip = '';
+var sidebarId = '';
+//---------------------------------------------------------------------------------------------------------------------------------//
+//------------------------------------------------------YouTube variables---------------------------------------------------------------//
+var tubeURL = "https://www.googleapis.com/youtube/v3/";
+var youTubeKey = "AIzaSyC4tz1TDHpgGTkAyNR9ycjU0cixA6bDNnk";
+var videoSearch = '';
+//---------------------------------------------------YouTube API------------------------------------------------------------------//
+    
+let getYouTube = function(){
+      videoSearch = tubeURL + "search?&q=" + topic + "&part=snippet&chart=mostPopular&videoCategoryId=27&type=video&maxResults=1&key=" + youTubeKey;
+
+                $.ajax({
+                url: videoSearch,
+                method: "GET",             
+                dataType: 'jsonp'
+            })
+            .done(function(response) {
+                    var videoId = response.items[0].id.videoId;
+
+            ("<iframe width='100%' height='100%' src='https://www.youtube.com/embed/" + videoId + "' frameborder='0'id='hi'></iframe>");                          
+            });
+};   
+
+//-----------------------------------------------------Zip Code/Search logic---------------------------------------------------------//
+function isValidUSZip(isZip) { // returns boolean; if user input is valid US zip code
+   return /^\d{5}(-\d{4})?$/.test(isZip);
+}
+
+$('#zipSearch').on('click', function(event) { //on click of the zip code 'Go!' button 
+  event.preventDefault(event);
+  tryZip = $('#userZip:text').val();
+  $('#noZip').html('')
+
+  if (isValidUSZip(tryZip) === true) { //if Valid zip code set as user zip code.
+    zip = tryZip;
+    $('#zipHolder').html('Current Zip Code: ' + zip + ' <span class="caret"></span>');
+    $('#searchError').html('');
+    $('#zipHolder, #zipSearch, #zipForm').toggle();  //toggles either hide/display to these classes
+  }
+  else {
+    $('#zipForm').addClass('has-error'); //if invalid zip, turns the search box red
+  }
+});
+
+$('#changeZip').on('click', function(event) {
+    $('#zipHolder, #zipSearch, #zipForm').toggle();
+    $('#userZip:text').val('');
+    $('#zipForm').removeClass('has-error');
+});
+
+//---------------------------------------------------------------------------------------------------------------------------------//
+//-----------------------------------------------------------MeetUp API Call-------------------------------------------------------//
+
+let getMeetUp = function(){ 
+    queryUrl = 'https://api.meetup.com/2/open_events?key=' + meetUpKey + '&sign=true&photo-host=public&topic=' + topic + '&zip=' + zip + '&page=5&fields=next_event,time,group_photos&callback=?';
+    
+    $.getJSON(queryUrl, null, function(data) { //initial API call      
+      results = data.results;
+      console.log(results);
+          if (data.code === 'badtopic' || results.length === 0) { //if no meetup found based on user search, defaults to javascript meetups
+            topic = 'javascript'
+            queryUrl = 'https://api.meetup.com/2/open_events?key=' + meetUpKey + '&sign=true&photo-host=public&topic=' + topic + '&zip=' + zip + '&page=5&fields=next_event,time,group_photos&callback=?';
+      
+          $.getJSON(queryUrl, null, function(data){ // Second API call 
+            results = data.results;
+            $('#meetUpSidebar').html('We couldnt find any meetups meeting your search criteria. Here are a few others you may be interested in:' + '<br>' + '<br>');
+            displayMeetUp();
+          })
+          }
+          else {
+            $('#meetUpSidebar').html('');
+            displayMeetUp();
+          };
+      });
+
+};
+
+let displayMeetUp = function() {   //Displays up meetup on HTML, reformats unix time
+    for (var i =0; i < 3; i ++){
+      var meetUpDiv=$('<div>');
+      var p =  $('<p>');
+      var link = $('<a>');
+      var img = $('<img>');
+      var time = results[i].time;
+      var timeMoment = moment(time, 'x');
+      var currentTime = timeMoment.format('LLL')
+      var sidebarId = $('#' + topic);
+
+      img.attr('src', results[i].group.photos[0].highres_link);
+      img.css('width', '150px')
+      img.css('height', '100px')
+      link.attr('href', results[i].event_url)
+      link.attr('target', '_blank');
+      link.text('RSVP');
+      meetUpDiv.addClass('meetUpDiv')
+    if (results[i].venue === undefined) { //if no venue is listed
+      p.html("<br>" + results[i].name + '<br>' + "Next Event: " + currentTime);
+    }
+    else {
+      p.html("<br>" + results[i].name + '<br>' + results[i].venue.name + '<br>' + results[i].venue.city + ', ' + results[i].venue.state + '<br>' + "Next Event: " + currentTime);
+    }
+      meetUpDiv.append(p);
+      meetUpDiv.append(img);
+      meetUpDiv.append(link);
+      $(meetUpDiv).appendTo(sidebarId);
+  
+    }
+};
+//---------------------------------------------------------------------------------------------------------------------------------//
+    var topics = [];
+    // Function - Generates tabs of search input submitted
+    function searchTab() {
+        // For Loop - To cull search results
+        for (var i = 0; i < topics.length; i++) {
+            // Remove current tab class="active"
+            $("#myTab").find("li").removeClass('active');
+            // Remove current content class="active in"
+            $("#myTabContent").find("div").removeClass('active in');
+            // Variable - Define <div> to place search results in
+            var contentDiv = $("<div>");
+            // Variable - Define .content to place class="" in
+            contentDiv.attr("class", "tab-pane fade active in");
+            // Variable - Define .content to place class="" in
+            contentDiv.attr("id", topics[i]);
+            // Variable - Define <li> to generate search tab
+            var searchTab = $('<li>');
+            // Attribute to searchTab - class="active"
+            searchTab.attr("class", "active");
+            // Attribute to showTab - data-search="topics[i]"
+            searchTab.attr("data-search", topics[i]);
+
+            // Variable - Define <a> to generate input result
+            var tabAncr = $("<a data-toggle='tab'>");
+            // Attribute to showTab - href="#topics[i]"
+            tabAncr.attr("href", "#" + topics[i]);
+            // Text to showTab - displays search input on showTab
+            tabAncr.text(topics[i]);
+            // Variable - Button to delete search tab
+            var tabButton = $("<button type='button' class='close'>&times;</button>");
+            // Append with tabAncr - id="myTab"
+            searchTab.append(tabAncr);
+            // Append with tabButton - id="myTab"
+            searchTab.append(tabButton);
+
+            //create sidebar for each result
+            var sideBar = $('<nav>');
+            sideBar.addClass('sidebar sidebar-right');
+            sideBar.attr('id', topic);   
+            var meetUpHeader = $('<h3>');
+            meetUpHeader.css({'height': '60px', 'font-size': '14px', 'text-align': 'center'});
+            meetUpHeader.text('MeetUps Near You');
+            sideBar.append(meetUpHeader);
+            searchTab.append(sideBar);
+        }        
+        // Append with searchTab - id="myTab"
+        $("#myTab").append(searchTab);
+
+        // Append with contentDiv - id="myTabContent"
+        $("#sidebar-container").append(contentDiv);
+    };
+
+function sidebarStatus() {
+    var topicQuery = $('#' + topic);
+    $('li').find('nav').removeClass('active'); 
+    if ($('li').find('nav').hasClass('open')) {
+        ($('li').find('nav').removeClass('open'));
+        topicQuery.addClass('open', 'active');       
+    }
+}
+
+
+//---------------------------------------------------Search on click functions-------------------------------------------------------------------------//
+
+$('#searchButton').on('click', function(event) {
+  event.preventDefault(event);
+
+
+  if ($('#searchInput:text').val().trim() !== '' && $("#zipHolder").is(":visible")) { //Prevents searching if there is no input,
+    $("#box").show(100);
+    $("#vids").empty().show();
+    topic = $('#searchInput:text').val().trim(); //sets topic to user input, makes api call,
+    topics.push(topic);                          
+    searchTab();
+    sidebarStatus();                                     
+    $('#searchInput:text').val(''); //clears search box
+    getYouTube();
+    getMeetUp();
+  }
+
+  else if ($('#zipHolder').is(':hidden')) {
+    $('#noZip').html('Please select a zip code.')
+    $('#zipForm').addClass('has-error');
+    $('#searchInput:text').val('');
+  };
+
+});
+
+}; //window On load
+
