@@ -67,9 +67,10 @@ var tubeURL = "https://www.googleapis.com/youtube/v3/";
 var youTubeKey = "AIzaSyC4tz1TDHpgGTkAyNR9ycjU0cixA6bDNnk";
 var videoSearch = '';
 //---------------------------------------------------YouTube API------------------------------------------------------------------//
-    
+
 let getYouTube = function(){
     videoSearch = tubeURL + "search?&q=" + topic + "&part=snippet&chart=mostPopular&videoCategoryId=27&type=video&maxResults=1&key=" + youTubeKey;
+    var youtubeId = $('#' + topic + 'video');
 
         $.ajax({
         url: videoSearch,
@@ -78,8 +79,8 @@ let getYouTube = function(){
     })
     .done(function(response) {
             var videoId = response.items[0].id.videoId;
-
-    ("<iframe width='100%' height='100%' src='https://www.youtube.com/embed/" + videoId + "' frameborder='0'id='hi'></iframe>");                          
+            console.log(response)
+    youtubeId.append("<iframe width='100%' height='100%' src='https://www.youtube.com/embed/" + videoId + "' frameborder='0'id='hi'></iframe>");                          
     });
 };   
 
@@ -118,7 +119,6 @@ let getMeetUp = function(){
     
     $.getJSON(queryUrl, null, function(data) { //initial API call      
       results = data.results;
-      console.log(results);
           if (data.code === 'badtopic' || results.length === 0) { //if no meetup found based on user search, defaults to javascript meetups
             topic = 'javascript'
             queryUrl = 'https://api.meetup.com/2/open_events?key=' + meetUpKey + '&sign=true&photo-host=public&topic=' + topic + '&zip=' + zip + '&page=5&fields=next_event,time,group_photos&callback=?';
@@ -136,6 +136,7 @@ let getMeetUp = function(){
       });
 
 };
+
 
 let displayMeetUp = function() {   //Displays up meetup on HTML, reformats unix time
     for (var i =0; i < 3; i ++){
@@ -196,7 +197,9 @@ let displayMeetUp = function() {   //Displays up meetup on HTML, reformats unix 
             // Attribute to showTab - href="#topics[i]"
             tabAncr.attr("href", "#" + topics[i]);
             // Text to showTab - displays search input on showTab
-            tabAncr.text(topics[i]);
+            topic = topic.split('_').join(' ');
+            tabAncr.text(topic);
+            topic = topic.split(' ').join('_');
             // Variable - Button to delete search tab
             var tabButton = $("<button type='button' class='close'>&times;</button>");
             // Append with tabAncr - id="myTab"
@@ -205,6 +208,8 @@ let displayMeetUp = function() {   //Displays up meetup on HTML, reformats unix 
             searchTab.append(tabButton);
 
             //create sidebar for each result
+            
+            console.log(topic);
             var sideBar = $('<nav>');
             sideBar.addClass('sidebar sidebar-right');
             sideBar.attr('id', topic + 'sidebar');   
@@ -213,12 +218,16 @@ let displayMeetUp = function() {   //Displays up meetup on HTML, reformats unix 
             meetUpHeader.text('MeetUps Near You');
             sideBar.append(meetUpHeader);
             searchTab.append(sideBar);
+
+            var vids = $('<div>');
+            vids.attr('id', topic + 'video');
+            contentDiv.append(vids);
         }        
         // Append with searchTab - id="myTab"
         $("#myTab").append(searchTab);
 
         // Append with contentDiv - id="myTabContent"
-        $("#sidebar-container").append(contentDiv);
+        $("#myTabContent").append(contentDiv);
     };
 
 function sidebarStatus() {
@@ -243,8 +252,9 @@ $('#searchButton').on('click', function(event) {
     $("#box").show(100);
     $("#vids").empty().show();
     topic = $('#searchInput:text').val().trim();
-    topic = topic.capitalize();                                                     //sets topic to user input, makes api call,
-    topics.push(topic);                          
+    topic = topic.capitalize();
+    topic = topic.split(' ').join('_');                                                     //sets topic to user input, makes api call,
+    topics.push(topic);                  
     searchTab();
     sidebarStatus();
     $('.sidebar-left').show();                                     
