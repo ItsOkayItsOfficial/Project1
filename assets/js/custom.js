@@ -53,6 +53,7 @@ $('#vids').hide();
 $('.sidebar-left').hide();
 
 
+
 //-----------------------------------------------------MeetUp Variables-------------------------------------------------------------------//
 var topic = '';
 var zip = '';
@@ -61,17 +62,18 @@ var meetUpKey = '1a143e3f55f5e4a64664065683536';
 var queryUrl = 'https://api.meetup.com/2/open_events?key=' + meetUpKey + '&sign=true&photo-host=public&topic=' + topic + '&zip=' + zip + '&page=5&fields=next_event,time,group_photos&callback=?';
 var tryZip = '';
 var sidebarId = '';
+var defaultTopic = '';
 //---------------------------------------------------------------------------------------------------------------------------------//
 //------------------------------------------------------YouTube variables---------------------------------------------------------------//
 var tubeURL = "https://www.googleapis.com/youtube/v3/";
 var youTubeKey = "AIzaSyC4tz1TDHpgGTkAyNR9ycjU0cixA6bDNnk";
 var videoSearch = '';
 //---------------------------------------------------YouTube API------------------------------------------------------------------//
+ 
 
 let getYouTube = function(){
     videoSearch = tubeURL + "search?&q=" + topic + "&part=snippet&chart=mostPopular&videoCategoryId=27&type=video&maxResults=1&key=" + youTubeKey;
     var youtubeId = $('#' + topic + 'video');
-
         $.ajax({
         url: videoSearch,
         method: "GET",             
@@ -80,7 +82,7 @@ let getYouTube = function(){
     .done(function(response) {
             var videoId = response.items[0].id.videoId;
             console.log(response)
-    youtubeId.append("<iframe width='100%' height='100%' src='https://www.youtube.com/embed/" + videoId + "' frameborder='0'id='hi'></iframe>");                          
+    youtubeId.append("<iframe width='100%' height='100%' src='https://www.youtube.com/embed/" + videoId + "' frameborder='0'id='hi'></iframe>");  
     });
 };   
 
@@ -96,6 +98,8 @@ $('#zipSearch').on('click', function(event) { //on click of the zip code 'Go!' b
 
   if (isValidUSZip(tryZip) === true) { //if Valid zip code set as user zip code.
     zip = tryZip;
+    sessionStorage.clear();
+    sessionStorage.setItem('zip', zip);
     $('#zipHolder').html('Current Zip Code: ' + zip + ' <span class="caret"></span>');
     $('#searchError').html('');
     $('#zipHolder, #zipSearch, #zipForm').toggle();  //toggles either hide/display to these classes
@@ -111,6 +115,15 @@ $('#changeZip').on('click', function(event) {
     $('#zipForm').removeClass('has-error');
 });
 
+let checkZip = function() {
+    if (localStorage.getItem("zip") !== null) {
+        zip = localStorage.getItem('zip');
+        $('#zipHolder').html('Current Zip Code: ' + zip + ' <span class="caret"></span>');
+        $('#searchError').html('');
+        $('#zipHolder, #zipSearch, #zipForm').toggle(); 
+    }
+}  
+
 //---------------------------------------------------------------------------------------------------------------------------------//
 //-----------------------------------------------------------MeetUp API Call-------------------------------------------------------//
 
@@ -119,13 +132,13 @@ let getMeetUp = function(){
     
     $.getJSON(queryUrl, null, function(data) { //initial API call      
       results = data.results;
-          if (data.code === 'badtopic' || results.length === 0) { //if no meetup found based on user search, defaults to javascript meetups
-            topic = 'javascript'
-            queryUrl = 'https://api.meetup.com/2/open_events?key=' + meetUpKey + '&sign=true&photo-host=public&topic=' + topic + '&zip=' + zip + '&page=5&fields=next_event,time,group_photos&callback=?';
+      console.log(results);
+          if (data.code === 'badtopic' || results.length === 0 || results == undefined) { //if no meetup found based on user search, defaults to javascript meetups
+            defaultTopic = 'javascript'
+            queryUrl = 'https://api.meetup.com/2/open_events?key=' + meetUpKey + '&sign=true&photo-host=public&topic=' + defaultTopic + '&zip=' + zip + '&page=5&fields=next_event,time,group_photos&callback=?';
       
           $.getJSON(queryUrl, null, function(data){ // Second API call 
             results = data.results;
-            $('#meetUpSidebar').html('We couldnt find any meetups meeting your search criteria. Here are a few others you may be interested in:' + '<br>' + '<br>');
             displayMeetUp();
           })
           }
@@ -221,6 +234,7 @@ let displayMeetUp = function() {   //Displays up meetup on HTML, reformats unix 
 
             var vids = $('<div>');
             vids.attr('id', topic + 'video');
+            vids.css({'height': '400px', 'width': '80%', 'text-align': 'center', 'margin': '0px 10% 0px 10%'});
             contentDiv.append(vids);
         }        
         // Append with searchTab - id="myTab"
@@ -253,7 +267,8 @@ $('#searchButton').on('click', function(event) {
     $("#vids").empty().show();
     topic = $('#searchInput:text').val().trim();
     topic = topic.capitalize();
-    topic = topic.split(' ').join('_');                                                     //sets topic to user input, makes api call,
+    topic = topic.split(' ').join('_');
+    topic = topic.split('/').join('_');                                          
     topics.push(topic);                  
     searchTab();
     sidebarStatus();
@@ -270,6 +285,6 @@ $('#searchButton').on('click', function(event) {
   };
 
 });
-
+checkZip();
 }; //window On load
 
