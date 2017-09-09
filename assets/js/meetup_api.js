@@ -1,51 +1,11 @@
 /*
  * Author: Project #1 Fire
- * Project Name: Project Fire custom page JS
+ * Project Name: Project Fire MeetUp API Search
  * Version: Initialzed
  * Date: 08.29.17
  * URL: github.com/itsokayitsofficial/project1/
  */
 
-
-// Nav Transition
-$('body').on('click', function () {
-    if ($('.nav-tabs').children().length == 0) {
-        $(".nav-tabs").css("visibility","hidden");
-        $(".site-nav").addClass("active");
-        $(".navbar-brand").addClass("fade-out").removeClass("fade-in");
-        $(".logo").removeClass("fade-out").addClass("fade-in");
-    } else {
-        $(".nav-tabs").css("visibility","visible");
-        $(".site-nav").removeClass("active");
-        $(".navbar-brand").addClass("fade-in").removeClass("fade-out");
-        $(".logo").removeClass("fade-in").addClass("fade-out");
-    }
-});
-
-$(document).on('click', 'li', function() {  
-    $('li').find('nav').removeClass('active'); 
-    if ($('li').find('nav').hasClass('open')) { //If sidebar of current tab is open, sidebar of newly clicked tab will also open.
-          $('li').find('nav').removeClass('open');
-          $(this).find('nav').addClass('open');
-    }
-    if ($(this).hasClass('active')) {
-      $(this).find('nav').addClass('active');
-    }
-})
-
-// Tab Clear
-$('.nav-tabs').on("click", "button", function () {
-    var anchor = $(this).siblings('a');
-    $(anchor.attr('href')).remove();
-    $(this).parent().remove();
-    $(".nav-tabs li").children('a').first().click();
-});
-
-// Sidebar Transitions
-$(document).on('click', '.sidebar', function(event) {
-    event.preventDefault();
-    $(this).toggleClass("open");
-});
 
 window.onload = function() {
 $("#box").hide(100);
@@ -60,7 +20,6 @@ var results;
 var meetUpKey = '1a143e3f55f5e4a64664065683536';
 var queryUrl = 'https://api.meetup.com/2/open_events?key=' + meetUpKey + '&sign=true&photo-host=public&topic=' + topic + '&zip=' + zip + '&page=5&fields=next_event,time,group_photos&callback=?';
 var tryZip = '';
-var sidebarId = '';
 //---------------------------------------------------------------------------------------------------------------------------------//
 //------------------------------------------------------YouTube variables---------------------------------------------------------------//
 var tubeURL = "https://www.googleapis.com/youtube/v3/";
@@ -77,9 +36,10 @@ let getYouTube = function(){
                 dataType: 'jsonp'
             })
             .done(function(response) {
+              console.log(response);
                     var videoId = response.items[0].id.videoId;
 
-            ("<iframe width='100%' height='100%' src='https://www.youtube.com/embed/" + videoId + "' frameborder='0'id='hi'></iframe>");                          
+                    console.log(response.items[0]); ("<iframe width='100%' height='100%' src='https://www.youtube.com/embed/" + videoId + "' frameborder='0'id='hi'></iframe>");                          
             });
 };   
 
@@ -91,7 +51,7 @@ function isValidUSZip(isZip) { // returns boolean; if user input is valid US zip
 $('#zipSearch').on('click', function(event) { //on click of the zip code 'Go!' button 
   event.preventDefault(event);
   tryZip = $('#userZip:text').val();
-  $('#noZip').html('')
+  $('#searchError').html('')
 
   if (isValidUSZip(tryZip) === true) { //if Valid zip code set as user zip code.
     zip = tryZip;
@@ -108,6 +68,29 @@ $('#changeZip').on('click', function(event) {
     $('#zipHolder, #zipSearch, #zipForm').toggle();
     $('#userZip:text').val('');
     $('#zipForm').removeClass('has-error');
+});
+
+$('#searchButton').on('click', function(event) {
+  event.preventDefault(event);
+
+
+  if ($('#searchInput:text').val().trim() !== '' && $("#zipHolder").is(":visible")) { //Prevents searching if there is no input,
+    $("#box").show(100);
+    $("#vids").empty().show();
+    topic = $('#searchInput:text').val().trim();   
+    console.log(videoSearch);                                 //sets topic to user input, makes api call,
+    $('#toggleContainer').show();                                                  //clears search box
+    $('#searchInput:text').val('');
+    getYouTube();
+    getMeetUp();
+  }
+
+  else if ($('#zipHolder').is(':hidden')) {
+    $('#searchError').html('Please select a zip code.')
+    $('#zipForm').addClass('has-error');
+    $('#searchInput:text').val('');
+  };
+
 });
 
 //---------------------------------------------------------------------------------------------------------------------------------//
@@ -146,7 +129,7 @@ let displayMeetUp = function() {   //Displays up meetup on HTML, reformats unix 
       var time = results[i].time;
       var timeMoment = moment(time, 'x');
       var currentTime = timeMoment.format('LLL')
-      var sidebarId = $('#' + topic);
+
 
       img.attr('src', results[i].group.photos[0].highres_link);
       img.css('width', '150px')
@@ -164,97 +147,9 @@ let displayMeetUp = function() {   //Displays up meetup on HTML, reformats unix 
       meetUpDiv.append(p);
       meetUpDiv.append(img);
       meetUpDiv.append(link);
-      $(meetUpDiv).appendTo(sidebarId);
+      $('#meetUpSidebar').append(meetUpDiv);
   
     }
 };
 //---------------------------------------------------------------------------------------------------------------------------------//
-    var topics = [];
-    // Function - Generates tabs of search input submitted
-    function searchTab() {
-        // For Loop - To cull search results
-        for (var i = 0; i < topics.length; i++) {
-            // Remove current tab class="active"
-            $("#myTab").find("li").removeClass('active');
-            // Remove current content class="active in"
-            $("#myTabContent").find("div").removeClass('active in');
-            // Variable - Define <div> to place search results in
-            var contentDiv = $("<div>");
-            // Variable - Define .content to place class="" in
-            contentDiv.attr("class", "tab-pane fade active in");
-            // Variable - Define .content to place class="" in
-            contentDiv.attr("id", topics[i]);
-            // Variable - Define <li> to generate search tab
-            var searchTab = $('<li>');
-            // Attribute to searchTab - class="active"
-            searchTab.attr("class", "active");
-            // Attribute to showTab - data-search="topics[i]"
-            searchTab.attr("data-search", topics[i]);
-
-            // Variable - Define <a> to generate input result
-            var tabAncr = $("<a data-toggle='tab'>");
-            // Attribute to showTab - href="#topics[i]"
-            tabAncr.attr("href", "#" + topics[i]);
-            // Text to showTab - displays search input on showTab
-            tabAncr.text(topics[i]);
-            // Variable - Button to delete search tab
-            var tabButton = $("<button type='button' class='close'>&times;</button>");
-            // Append with tabAncr - id="myTab"
-            searchTab.append(tabAncr);
-            // Append with tabButton - id="myTab"
-            searchTab.append(tabButton);
-
-            //create sidebar for each result
-            var sideBar = $('<nav>');
-            sideBar.addClass('sidebar sidebar-right');
-            sideBar.attr('id', topic);   
-            var meetUpHeader = $('<h3>');
-            meetUpHeader.css({'height': '60px', 'font-size': '14px', 'text-align': 'center'});
-            meetUpHeader.text('MeetUps Near You');
-            sideBar.append(meetUpHeader);
-            searchTab.append(sideBar);
-        }        
-        // Append with searchTab - id="myTab"
-        $("#myTab").append(searchTab);
-
-        // Append with contentDiv - id="myTabContent"
-        $("#sidebar-container").append(contentDiv);
-    };
-
-function sidebarStatus() {
-    var topicQuery = $('#' + topic);
-    $('li').find('nav').removeClass('active'); 
-    if ($('li').find('nav').hasClass('open')) {
-        ($('li').find('nav').removeClass('open'));
-        topicQuery.addClass('open', 'active');       
-    }
-}
-
-
-//---------------------------------------------------Search on click functions-------------------------------------------------------------------------//
-
-$('#searchButton').on('click', function(event) {
-  event.preventDefault(event);
-
-
-  if ($('#searchInput:text').val().trim() !== '' && $("#zipHolder").is(":visible")) { //Prevents searching if there is no input,
-    $("#box").show(100);
-    $("#vids").empty().show();
-    topic = $('#searchInput:text').val().trim(); //sets topic to user input, makes api call,
-    topics.push(topic);                          
-    searchTab();
-    sidebarStatus();                                     
-    $('#searchInput:text').val(''); //clears search box
-    getYouTube();
-    getMeetUp();
-  }
-
-  else if ($('#zipHolder').is(':hidden')) {
-    $('#noZip').html('Please select a zip code.')
-    $('#zipForm').addClass('has-error');
-    $('#searchInput:text').val('');
-  };
-
-});
-
 }; //window On load
