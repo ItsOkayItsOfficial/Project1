@@ -17,6 +17,7 @@
   var search = "";
   var zipSearch = "";
 
+
   //Capturing Buttonclicks
   $("zipSearch").on("click", function(event) {
   event.preventDefault(event);
@@ -26,7 +27,7 @@
 
   //Logic for storage of storing and retrievig most recent user input
  search = $("#zipSearch").val().trim();
- name = $("searchButton").val().trim();
+ name = $("#searchButton").val().trim();
 
  //Code for push
  data.ref().push({
@@ -35,6 +36,8 @@
 
     dateAdded: firebase.database.ServerValue.TIMESTAMP
  });
+
+
 });  
 
 dataRef.ref().on("child-added", function(childSnapshot) {
