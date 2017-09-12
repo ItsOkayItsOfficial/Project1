@@ -14,12 +14,12 @@ html,
 body {
 	height: 100%;
 	width: 100%;
+	background-image: url('../img/dark_geometric.png')
 }
 
 iframe {
 	border: 0;
 }
-
 
 /*=============================================
 Sitenav
@@ -31,7 +31,7 @@ Sitenav
 	width: 100%;
 	height: 60px;
 	text-align: center;
-	background-color: rgba(0, 0, 0, 1);
+	background-color: #F5F5F5;
 	-webkit-transition: all 0.2s ease-in-out;
 	-moz-transition: all 0.2s ease-in-out;
 	-o-transition: all 0.2s ease-in-out;
@@ -140,7 +140,7 @@ iframe {
 }
 
 .sidebar {
-    background: black;
+    background: #F5F5F5;
     position: fixed;
     width: 10px;
     height: 100%;
@@ -155,34 +155,36 @@ iframe {
 
 .sidebar.active {
 	z-index:1000;
-	background: black;
+	background: #F5F5F5;
 }
 
 .sidebar h3 {
-    color: black;
+    color: #F5F5F5;
     font-size: 1.9em;
     padding: 20px;
     margin: 0;
     font-weight: 300;
-    background: white;
+		background: #353839;
+		height: 60px;
 }
 
 .sidebar a {
     display: block;
-    color: #fff;
+    color: #353839;
     font-size: 1.1em;
     font-weight: 300;
-    border-bottom: 1px solid white;
+    border-bottom: 1px solid #353839;
     padding: 1em;
 }
 
 .sidebar a:hover {
-    background: #258ecd;
+		background: #353839;
+		color: #F5F5F5;
 }
 
 .sidebar a:active {
-    background: black;
-    color: #47a3da;
+    background: #F5F5F5;
+    color: #353839;
 }
 
 .sidebar-container {

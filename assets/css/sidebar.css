@@ -20,9 +20,9 @@ body {
     z-index: 1000;
     overflow: hidden;
     -webkit-transition: all 0.5s ease-in-out;
-	-moz-transition: all .5s ease-in-out;
-	-o-transition: all .5s ease-in-out;
-	transition: all .5s ease-in-out;
+    -moz-transition: all .5s ease-in-out;
+    -o-transition: all .5s ease-in-out;
+    transition: all .5s ease-in-out;
 }
 
 .sidebar h3 {
@@ -59,9 +59,9 @@ body {
 .open {
     width: 240px;
     -webkit-transition: all 0.5s ease-in-out;
-	-moz-transition: all .5s ease-in-out;
-	-o-transition: all .5s ease-in-out;
-	transition: all .5s ease-in-out;
+    -moz-transition: all .5s ease-in-out;
+    -o-transition: all .5s ease-in-out;
+    transition: all .5s ease-in-out;
 }
 
 .sidebar-left {

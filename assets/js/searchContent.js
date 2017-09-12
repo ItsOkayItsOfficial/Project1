@@ -95,5 +95,4 @@ $(document).ready(function () {
         // Run Function - Displays search input as button
         searchTab();
     });
-    // END - $("#searchButton").on("click", function (event)
-});
+    // END - $("#searchButton").on("click"
