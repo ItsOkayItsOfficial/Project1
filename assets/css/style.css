@@ -206,3 +206,20 @@ iframe {
 .sidebar-right {
     right: 0px;
 }
+
+.selected {
+	background-color:blue
+}
+
+.correctStatus {
+	background-color:green;
+}
+
+.incorrectStatus {
+  background-color:red;
+}
+
+.question {
+  font-size: 16px;
+  font-weight: bold;
+}
