@@ -10,17 +10,20 @@
 // Nav Transition
 $('body').on('click', function () {
     if ($('.nav-tabs').children().length == 0) {
-        $(".nav-tabs").css("visibility","hidden");
+        $(".nav-tabs").css("visibility", "hidden");
         $(".site-nav").addClass("active");
+        $("#logo").attr("<img class='logo' src='assets/img/owl_logo_1.svg'>")
         $(".navbar-brand").addClass("fade-out").removeClass("fade-in");
         $(".logo").removeClass("fade-out").addClass("fade-in");
     } else {
-        $(".nav-tabs").css("visibility","visible");
+        $(".nav-tabs").css("visibility", "visible");
         $(".site-nav").removeClass("active");
+        $("#logo").children().remove();
         $(".navbar-brand").addClass("fade-in").removeClass("fade-out");
         $(".logo").removeClass("fade-in").addClass("fade-out");
     }
 });
+
 
 // Tab Clear
 $('.nav-tabs').on("click", "button", function () {
@@ -30,8 +33,26 @@ $('.nav-tabs').on("click", "button", function () {
     $(".nav-tabs li").children('a').first().click();
 });
 
+
 // Sidebar Transitions
-$('.sidebar').on('click', function(event) {
-	event.preventDefault();
-	$(this).toggleClass("open");
+$('.sidebar').on('click', function (event) {
+    event.preventDefault();
+    $(this).toggleClass("open");
+});
+
+
+// Change Theme
+var bootSwatch = 'https://bootswatch.com/';
+var bootMin = '/bootstrap.min.css';
+
+$('#flatly').on('click', function () {
+    $('#bootstrap').remove('href').attr('href', bootSwatch + 'flatly' + bootMin);
+});
+
+$('#paper').on('click', function () {
+    $('#bootstrap').remove('href').attr('href', bootSwatch + 'paper' + bootMin);
+});
+
+$('#original').on('click', function () {
+    $('#bootstrap').remove('href').attr('href', bootSwatch + 'simplex' + bootMin);
 });
