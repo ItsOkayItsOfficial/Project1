@@ -58,6 +58,7 @@ window.onload = function() {
 $('#zipHolder').hide();
 $('.sidebar-left').hide();
 
+
 //-----------------------------------------------------MeetUp Variables-------------------------------------------------------------------//
 var topic = '';
 var zip = '';
@@ -73,6 +74,8 @@ var defaultTopic = '';
 var tubeURL = "https://www.googleapis.com/youtube/v3/";
 var youTubeKey = "AIzaSyC4tz1TDHpgGTkAyNR9ycjU0cixA6bDNnk";
 var videoSearch = '';
+
+
 //----------------------------------------------------------YouTube API-------------------------------------------------------------------------------------//
 let getYouTube = function(){
   videoSearch = tubeURL + "search?&q=" + topic + '%20coding%20tutorial' + "&part=snippet&chart=mostPopular&videoCategoryId=27&type=video&relevanceLanguage=en&maxResults=1&key=" + youTubeKey;
@@ -88,17 +91,20 @@ let getYouTube = function(){
     youtubeId.append("<iframe width='100%' height='100%' src='https://www.youtube.com/embed/" + videoId + "' frameborder='0'id='hi'></iframe>")
     });
 };
-//---------------------------------------------------------------------------------------------------------------------------------------------------//
+
+
 //-----------------------------------------------------Zip Code/Search logic-----------------------------------------------------------------------//
 //returns boolean; checks if user input is valid US zip code
 function isValidUSZip(isZip) {
   return /^\d{5}(-\d{4})?$/.test(isZip);
 }
-//on click of the zip code 'Go!' button.
+
+//on click of the zip code 'Let's Go!' button.
 $('#zipSearch').on('click', function(event) {
   event.preventDefault(event);
   tryZip = $('#userZip:text').val();
   $('#noZip').html('')
+
 //if Valid zip code set as user zip code and stores zip code locally.
   if (isValidUSZip(tryZip) === true) {
     zip = tryZip;
@@ -108,17 +114,23 @@ $('#zipSearch').on('click', function(event) {
     $('#searchError').html('');
     $('#zipHolder, #zipSearch, #zipForm').toggle();
   }
+
 //if invalid zip, turns the search box red
   else {
     $('#zipForm').addClass('has-error');
   }
+  // Hide id="zipModal" after click
+  $('#zipModal').modal('hide')
 });
+
 //Function to change zip code
 $('#changeZip').on('click', function(event) {
+  $('#zipModal').modal('show');
   $('#zipHolder, #zipSearch, #zipForm').toggle();
   $('#userZip:text').val('');
   $('#zipForm').removeClass('has-error');
 });
+
 //checks if there is a zip in local storage, if there is, sets that as current zip
 let checkZip = function() {
   if (localStorage.getItem("zip") !== null) {
@@ -126,13 +138,17 @@ let checkZip = function() {
     $('#zipHolder').html('Current Zip Code: ' + zip + ' <span class="caret"></span>');
     $('#searchError').html('');
     $('#zipHolder, #zipSearch, #zipForm').toggle();
+    $('#zipModal').modal('hide')
+  } else {
+    // Show id="zipd"
+   $('#zipModal').modal('show')
+}
   };
-};
 
-//------------------------------------------------------------------------------------------------------------------------------------------------------------//
-//-----------------------------------------------------------MeetUp API Call-----------------------------------------------------------------------------//
 
+//-----------------------------------------------------------MeetUp API
 let getMeetUp = function(){
+  console.log(zip);
   queryUrl = 'https://api.meetup.com/2/open_events?key=' + meetUpKey + '&sign=true&photo-host=public&topic=' + topic + '&zip=' + zip + '&page=5&fields=next_event,time,group_photos&callback=?';
 
 //initial API call
@@ -153,6 +169,7 @@ let getMeetUp = function(){
     };
   });
 };
+
 //Dynamically displays meetup sidebar, reformats unix time for next event
 let displayMeetUp = function() {
   for (var i =0; i < 3; i ++){
@@ -174,7 +191,6 @@ let displayMeetUp = function() {
     link.addClass('RSVP');
     link.text('RSVP');
 
-
 //if no venue is listed, remove venue from display
   if (results[i].venue === undefined) {
     p.html("<br>" + results[i].name + '<br>' + "Next Event: " + currentTime);
@@ -189,12 +205,15 @@ let displayMeetUp = function() {
     $(meetUpDiv).appendTo(sidebarId);
   }
 };
-//-------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+
+
 //------------------------------------------------------------Modal Generation for search-------------------------------------------------------------------------------//
 var topics = [];
+
     // Function - Generates tabs of search input submitted
 function searchTab() {
   var codepen = $("<iframe height='300' scrolling='no' title='RZvYVZ' src='//codepen.io/marcorulesk345/embed/RZvYVZ/?height=300&theme-id=31149&default-tab=html,result&embed-version=2&editable=true' frameborder='no' allowtransparency='true' allowfullscreen='true' style='width: 100%;'>See the Pen <a href='https://codepen.io/marcorulesk345/pen/RZvYVZ/'>RZvYVZ</a> by marco (<a href='https://codepen.io/marcorulesk345'>@marcorulesk345</a>) on <a href='https://codepen.io'>CodePen</a>.</iframe>");
+
   // For Loop - To cull search results
   for (var i = 0; i < topics.length; i++) {
     // Remove current tab class="active"
@@ -247,17 +266,22 @@ function searchTab() {
     contentDiv.append(vids);
     contentDiv.append(codepen);
   };
+
     // Append with searchTab - id="myTab"
     $("#myTab").append(searchTab);
+
     // Append with contentDiv - id="myTabContent"
     $("#myTabContent").append(contentDiv);
 };
-//-------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+
+
 //---------------------------------------------------Search on click functions-------------------------------------------------------------------------------//
+
 //Capitalizes first letter of search input
 String.prototype.capitalize = function() {
   return this.charAt(0).toUpperCase() + this.slice(1);
 }
+
 //Function- If sidebar was open at time of search, new search will have an open sidebar
 function sidebarStatus() {
 var topicQuery = $('#' + topic + 'sidebar');
@@ -267,14 +291,17 @@ $('li').find('nav').removeClass('active');
       topicQuery.addClass('open', 'active');
   }
 }
+
 //On search
 $('#searchButton').on('click', function(event) {
 event.preventDefault(event);
 var tabOpen = false;
+
 //Prevents searching if there is no input
   if ($('#searchInput:text').val().trim() !== '' && $("#zipHolder").is(":visible")) {
     topic = $('#searchInput:text').val().trim();
     topic = topic.capitalize();
+
 //Checks to see if searched topic is already open in a tab, if it is, goes to that tab
     $('#myTab').find('li').removeClass('active');
     $('#myTab').find('li').each(function (){
@@ -288,8 +315,10 @@ var tabOpen = false;
         $('#searchInput:text').val('');
       }
     });
+
 //if there is no tab open for the searched topic, open new tab
     if (!tabOpen) {
+
 //accounts for space/slash in user input
       topic = topic.split(' ').join('_');
       topic = topic.split('/').join('_');
@@ -301,8 +330,8 @@ var tabOpen = false;
       getYouTube();
       getMeetUp();
     };
-
   }
+
 //user validation, must enter zip code to search
   else if ($('#zipHolder').is(':hidden')) {
     $('#noZip').html('Please select a zip code.')
@@ -310,10 +339,13 @@ var tabOpen = false;
     $('#searchInput:text').val('');
   };
 });
-//-------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+
+
 //---------------------------------------------------Quiz Modal Generation--------------------------------------------------------------------------------------------//
+
 //generates tab modal for each quiz dynamically.
 function quizTab() {
+
   // For Loop - To cull search results
   for (var k = 0; k < topics.length; k++) {
     // Remove current tab class="active"
@@ -359,6 +391,7 @@ function quizTab() {
     sideBar.append(meetUpHeader);
     searchTab.append(sideBar);
   }
+
   // Append with searchTab - id="myTab"
   $("#myTab").append(searchTab);
 
@@ -367,6 +400,7 @@ function quizTab() {
 };
 
 function insertQuestion (question){
+
 //Inserts questions from argued JS quiz object
   for (var j =0; j <  10; j++) {
     nextQuestion = question[j];
@@ -381,9 +415,11 @@ function insertQuestion (question){
         questionDiv.append(answer);
         $('#' + topic).append(questionDiv);
       }
+
     var br = $('<br>')
     questionDiv.append(br);
   }
+
 //Creates Submit/Reset button
   var quizSubmit = $('<button>');
   quizSubmit.attr('id', 'quizSubmit');
@@ -397,6 +433,7 @@ function insertQuestion (question){
   $('#' + topic).append(resetButton)
   resetButton.hide();
 }
+
 //Checks to see if quiz tab is already open. If it is, goes to that tab. If it is not, generates new quiz tab
 $('.quiz').on('click', function(e) {
   topic = this.id;
@@ -415,6 +452,7 @@ $('.quiz').on('click', function(e) {
       $('.quiz').parent().parent().removeClass('open');
     }
   });
+
   if (!tabOpen) {
     topics.push(topic);
     quizTab();
@@ -422,9 +460,11 @@ $('.quiz').on('click', function(e) {
     insertQuestion(quizzes[topic]);
     $('.quiz').parent().parent().removeClass('open');
   }
+
   //closes sidebar when you select a quiz
 });
-//-------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+
+
 //------------------------------------------------------------------Quiz Logic---------------------------------------------------------------------------//
 var correct = 0;
 //adds/removes classes to correct answer for CSS styling
@@ -435,6 +475,7 @@ $(document).on('click', '.correctAnswer', function() {
   $(this).addClass('correct');
   $(this).addClass('selected');
 });
+
 //adds/removes classes to incorrect answers for CSS styling
 $(document).on('click', '.answer1, .answer2, .answer3', function() {
   if ($(this).siblings().hasClass('correctStatus')) {
@@ -446,18 +487,21 @@ $(document).on('click', '.answer1, .answer2, .answer3', function() {
   $(this).addClass('selected');
   $(this).addClass('incorrect');
 });
+
 //On submit button click
 $(document).on('click', '#quizSubmit', function() {
 //resets correct to zero
   correct = 0;
 //removes result DIV
   $('#results').remove();
+
 //Counts every div with class correct and adds to correct var
   $(this).parent().children().find('div').each(function(){
     if ($(this).hasClass('correct')) {
       correct++;
     };
   });
+
 //Goes through each answer div and adds classes for right and wrong answers for CSS styling
   $(this).parent().children().find('div').each(function(){
     $(this).removeClass('selected')
@@ -468,6 +512,7 @@ $(document).on('click', '#quizSubmit', function() {
         $(this).addClass('incorrectStatus');
       };
   });
+
     var resultsDiv = $('<div>');
     resultsDiv.attr('id', 'results');
     resultsDiv.text('You got ' + correct + '/10 correct!')
@@ -478,6 +523,7 @@ $(document).on('click', '#quizSubmit', function() {
     $("html, body").animate({ scrollTop: 0 }, "slow");
     return false;
 });
+
 //On reset button click, goes through answer divs and removes all classes
 $(document).on('click', '#resetButton', function() {
   $(this).parent().children().find('div').each(function(){
@@ -486,13 +532,16 @@ $(document).on('click', '#resetButton', function() {
     $(this).removeClass('incorrectStatus')
     $(this).removeClass('incorrect')
   });
+
 //Shows submit button, hides results, hides reset button
     $('#quizSubmit').show();
     $('#results').remove();
     $('#resetButton').hide();
 });
-//-------------------------------------------------------------------------------------------------------------------------------------------------------------------//
+
+
 //-------------------------------------------------------------------Quiz objects-------------------------------------------------------------------------------------//
+
 var quizzes = {
   HTML_Quiz: {
     0: {
@@ -1470,5 +1519,7 @@ var quizzes = {
     }
   },
 };
+
 checkZip();
+
 }; //window On load

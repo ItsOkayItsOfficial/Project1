@@ -6,36 +6,33 @@
 * URL: github.com/itsokayitsofficial/project1/
 */
 
+/*=========
+Base Styles
+=========*/
 
-/* Base Styles */
 html,
 body {
 	height: 100%;
 	width: 100%;
+	background-image: url('../img/dark_geometric.png')
 }
 
 iframe {
 	border: 0;
-	width: 100%;
-	height: 500px;
-	text-align: center;
 }
 
-.name-logo {
-	top: 25%;
-	text-align: center;
-	position: fixed;
-	width: 100%;
-}
 
-/* Site Nav */
+/*=============================================
+Sitenav
+=============================================*/
+
 .site-nav {
 	position: fixed;
 	top: 0%;
 	width: 100%;
 	height: 60px;
 	text-align: center;
-	background-color: rgba(0, 0, 0, 1);
+	background-color: #F5F5F5;
 	-webkit-transition: all 0.2s ease-in-out;
 	-moz-transition: all 0.2s ease-in-out;
 	-o-transition: all 0.2s ease-in-out;
@@ -48,17 +45,10 @@ iframe {
 	padding-left: 30px;
 	margin-right: -30px;
 	height: 100%;
-}
+  }
 
-.navbar-zip {
-	float: right;
-	margin-top: -40px;
-	padding-left: -30px;
-	margin-right: 30px;
-}
-
-.site-nav.active {
-	top: 40%;
+  .site-nav.active {
+	top: 50%;
 	background-color: rgba(0, 0, 0, 0);
 	-webkit-transition: all 1s ease-in-out;
 	-moz-transition: all 1s ease-in-out;
@@ -74,30 +64,6 @@ iframe {
 	width: 400px;
 }
 
-.navbar-right {
-	padding-right: 0px;
-	margin-top: -20px;
-}
-
-.logo {
-	height: 100px;
-	top: 0;
-	background-color: rgba(0, 0, 0, 0);
-	-webkit-transition: all 1s ease-in-out;
-	-moz-transition: all 1s ease-in-out;
-	-o-transition: all 1s ease-in-out;
-	transition: all 1s ease-in-out;
-}
-
-.logo.active {
-	top: 30%;
-	background-color: rgba(0, 0, 0, 0);
-	-webkit-transition: all 1s ease-in-out;
-	-moz-transition: all 1s ease-in-out;
-	-o-transition: all 1s ease-in-out;
-	transition: all 1s ease-in-out;
-}
-
 .fade-in {
 	animation-name: fade-in;
 	animation-iteration-count: 1;
@@ -108,12 +74,8 @@ iframe {
 }
 
 @keyframes fade-in {
-	0% {
-		opacity: 0;
-	}
-	100% {
-		opacity: 1;
-	}
+	0% {opacity: 0;}
+	100% {opacity: 1;}
 }
 
 .fade-out {
@@ -125,27 +87,25 @@ iframe {
 }
 
 @keyframes fade-out {
-	0% {
-		opacity: 1;
-	}
-	100% {
-		opacity: 0;
-	}
+	0% {opacity: 1;}
+	100% {opacity: 0;}
 }
 
+/*=========
+Main
+=========*/
 
-/* Content Container */
 #contentContainer {
 	padding-top: 75px;
 }
 
-.nav-tabs>li>a {
+.nav-tabs > li > a {
 	padding-left: 25px;
 	padding-right: 25px;
 }
 
-.nav-tabs>li:hover>.close,
-.nav-tabs>li.active>.close {
+.nav-tabs > li:hover > .close,
+.nav-tabs > li.active > .close {
 	opacity: .3;
 }
 
@@ -164,23 +124,27 @@ iframe {
 	text-align: center;
 }
 
-
-/* Zip Code */
-#userZip,
-#chosenZip {
-	width: 160px;
+/* Zip Code style */
+#userZip, #chosenZip {
+	width:160px;
 }
 
+#searchInput {
+  background-color:#353839;
+  border: 1px #F5F5F5 solid;
+  color: #F5F5F5
+}
 
-/* MeetUp */
+iframe {
+  text-align: center;
+}
+
 .meetUpDiv {
-	font-size: 12px;
-	text-align: center;
-	width: 240px;
+    font-size:12px;
+    text-align:center;
+    width:240px;
 }
 
-
-/* Sidebar  */
 .sidebar {
     background: #F5F5F5;
     position: fixed;
@@ -193,10 +157,10 @@ iframe {
 	-moz-transition: all .5s ease-in-out;
 	-o-transition: all .5s ease-in-out;
 	transition: all .5s ease-in-out;
-	}
+}
 
 .sidebar.active {
-	z-index: 1000;
+	z-index:1000;
 	background: #F5F5F5;
 }
 
@@ -246,13 +210,12 @@ iframe {
 }
 
 .sidebar-right {
-    right: 0;
+    right: 0px;
 }
 
 .quiz {
   width: 50%;
 }
-
 .selected {
 	background-color:#F5F5F5;
 }
@@ -270,15 +233,13 @@ iframe {
   font-weight: bold;
   text-align:center;
 }
-
 .answer1, .answer2, .answer3, .correctAnswer {
   width:50%;
   margin: 0 auto;
   font-size:16px;
 }
 
-#quizSubmit,
-#resetButton {
+#quizSubmit, #resetButton {
   width:30%;
   margin-left: 300px;
   height:45px;
