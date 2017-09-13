@@ -7,10 +7,7 @@
 */
 
 
-/*=========
-Base Styles
-=========*/
-
+/* Base Styles */
 html,
 body {
 	height: 100%;
@@ -24,10 +21,7 @@ iframe {
 }
 
 
-/*=============================================
-Sitenav
-=============================================*/
-
+/* Site Nav */
 .site-nav {
 	position: fixed;
 	top: 0%;
@@ -126,10 +120,7 @@ Sitenav
 }
 
 
-/*=========
-Main
-=========*/
-
+/* Content Container */
 #contentContainer {
 	padding-top: 75px;
 }
@@ -157,4 +148,139 @@ Main
 #subjectSearch {
 	margin: 0 auto;
 	text-align: center;
+}
+
+
+/* Quiz */
+.quiz {
+	width: 50%;
+}
+
+.selected {
+	background-color: #F5F5F5;
+}
+
+.correctStatus {
+	background-color: green;
+}
+
+.incorrectStatus {
+	background-color: red;
+}
+
+.question {
+	font-size: 24px;
+	font-weight: bold;
+	text-align: center;
+}
+
+.answer1,
+.answer2,
+.answer3,
+.correctAnswer {
+	width: 50%;
+	margin: 0 auto;
+	font-size: 16px;
+}
+
+#quizSubmit,
+#resetButton {
+	width: 30%;
+	margin-left: 300px;
+	height: 45px;
+}
+
+#results {
+	position: fixed;
+	width: 200px;
+	height: 100px;
+	top: 130px;
+	right: 54px;
+	font-size: 24px;
+	border: 5px white solid;
+	text-align: center;
+	padding: 10px;
+}
+
+
+/* MeetUp */
+.meetUpDiv {
+	font-size: 12px;
+	text-align: center;
+	width: 240px;
+}
+
+
+/* Zip Code */
+#userZip,
+#chosenZip {
+	width: 160px;
+}
+
+
+/* Sidebar  */
+.sidebar {
+	background: #47a3da;
+	position: fixed;
+	width: 10px;
+	height: 100%;
+	top: 0;
+	z-index: 1000;
+	overflow: hidden;
+	-webkit-transition: all 0.5s ease-in-out;
+	-moz-transition: all .5s ease-in-out;
+	-o-transition: all .5s ease-in-out;
+	transition: all .5s ease-in-out;
+}
+
+.sidebar h3 {
+	color: #afdefa;
+	font-size: 1.9em;
+	padding: 20px;
+	margin: 0;
+	font-weight: 300;
+	background: #0d77b6;
+}
+
+.sidebar a {
+	display: block;
+	color: #fff;
+	font-size: 1.1em;
+	font-weight: 300;
+	border-bottom: 1px solid #258ecd;
+	padding: 1em;
+}
+
+.sidebar.active {
+	z-index: 1000;
+	background: #F5F5F5;
+}
+
+.sidebar a:hover {
+	background: #258ecd;
+}
+
+.sidebar a:active {
+	background: #afdefa;
+	color: #47a3da;
+}
+
+.sidebar-container {
+	width: 100%;
+}
+
+.open {
+	width: 240px;
+	-webkit-transition: all 0.5s ease-in-out;
+	-moz-transition: all .5s ease-in-out;
+	-o-transition: all .5s ease-in-out;
+	transition: all .5s ease-in-out;
+}
+
+.sidebar-left {
+	left: 0;
+}
+
+.sidebar-right {
+	right: 0px;
 }
