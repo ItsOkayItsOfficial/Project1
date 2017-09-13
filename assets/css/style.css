@@ -207,8 +207,11 @@ iframe {
     right: 0px;
 }
 
+.quiz {
+  width: 50%;
+}
 .selected {
-	background-color:blue
+	background-color:#F5F5F5;
 }
 
 .correctStatus {
@@ -220,6 +223,31 @@ iframe {
 }
 
 .question {
-  font-size: 16px;
+  font-size: 24px;
   font-weight: bold;
+  text-align:center;
 }
+.answer1, .answer2, .answer3, .correctAnswer {
+  width:50%;
+  margin: 0 auto;
+  font-size:16px;
+}
+
+#quizSubmit, #resetButton {
+  width:30%;
+  margin-left: 300px;
+  height:45px;
+}
+
+#results {
+    position: fixed;
+    width: 200px;
+    height: 100px;
+    top: 130px;
+    right: 54px;
+    font-size: 24px;
+    border: 5px white solid;
+    text-align: center;
+    padding: 10px;
+}
+
