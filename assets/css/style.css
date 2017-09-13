@@ -194,7 +194,7 @@ iframe {
 	height: 100%;
 	top: 0;
 	z-index: 999;
-	overflow-y: scroll;
+	overflow-x: scroll;
 	-webkit-transition: all 0.5s ease-in-out;
 	-moz-transition: all .5s ease-in-out;
 	-o-transition: all .5s ease-in-out;
@@ -248,11 +248,11 @@ iframe {
 }
 
 .sidebar-left {
-	left: 0px;
+	left: 0;
 }
 
 .sidebar-right {
-	right: 0px;
+	right: 0;
 }
 
 .quiz {
