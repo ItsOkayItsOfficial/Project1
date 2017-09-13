@@ -128,6 +128,11 @@ Main
 	width:160px;
 }
 
+#searchInput {
+  background-color:#353839;
+  border: 1px #F5F5F5 solid;
+  color: #F5F5F5
+}
 
 iframe {
   text-align: center;
