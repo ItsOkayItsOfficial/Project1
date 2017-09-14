@@ -210,7 +210,7 @@ window.onload = function () {
 
   // Function - Generates tabs of search input submitted
   function searchTab() {
-    var codepen = $("<iframe height='300' scrolling='no' title='RZvYVZ' src='//codepen.io/marcorulesk345/embed/RZvYVZ/?height=300&theme-id=31149&default-tab=html,result&embed-version=2&editable=true' frameborder='no' allowtransparency='true' allowfullscreen='true' style='width: 100%;'>See the Pen <a href='https://codepen.io/marcorulesk345/pen/RZvYVZ/'>RZvYVZ</a> by marco (<a href='https://codepen.io/marcorulesk345'>@marcorulesk345</a>) on <a href='https://codepen.io'>CodePen</a>.</iframe>");
+    var codepen = $("<div><iframe height='300' scrolling='no' title='RZvYVZ' src='//codepen.io/marcorulesk345/embed/RZvYVZ/?height=300&theme-id=31149&default-tab=html,result&embed-version=2&editable=true' frameborder='no' allowtransparency='true' allowfullscreen='true' style='width: 100%;'>See the Pen <a href='https://codepen.io/marcorulesk345/pen/RZvYVZ/'>RZvYVZ</a> by marco (<a href='https://codepen.io/marcorulesk345'>@marcorulesk345</a>) on <a href='https://codepen.io'>CodePen</a>.</iframe></div>");
 
     // For Loop - To cull search results
     for (var i = 0; i < topics.length; i++) {
@@ -225,10 +225,11 @@ window.onload = function () {
       // Variable - Define .content to place class="" in
       contentDiv.attr("id", topics[i]);
       contentDiv.css({
-        'height': '350px',
+        'height': '100%',
         'width': '100%',
         'text-align': 'center'
       });
+
       // Variable - Define <li> to generate search tab
       var searchTab = $('<li>');
       // Attribute to searchTab - class="active"
@@ -261,6 +262,7 @@ window.onload = function () {
         'font-size': '14px',
         'text-align': 'center'
       });
+
       meetUpHeader.text('MeetUps Near You');
       sideBar.append(meetUpHeader);
       searchTab.append(sideBar);
@@ -269,8 +271,9 @@ window.onload = function () {
         'height': '300px',
         'width': '80%',
         'text-align': 'center',
-        'margin': '0px 10% 0px 10%'
+        'margin': '100px 10% 0px 10%',
       })
+
       var vids = $('<div>');
       vids.attr('id', topic + 'video');
       vids.css({
@@ -279,6 +282,7 @@ window.onload = function () {
         'text-align': 'center',
         'margin': '0px 10% 0px 10%'
       })
+
       contentDiv.append(vids);
       contentDiv.append(codepen);
     };
@@ -288,6 +292,7 @@ window.onload = function () {
 
     // Append with contentDiv - id="myTabContent"
     $("#myTabContent").append(contentDiv);
+
   };
 
 
