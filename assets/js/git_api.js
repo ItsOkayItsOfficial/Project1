@@ -14,7 +14,11 @@ window.onload = function () {
     var topic = '';
     var results;
 
+<<<<<<< HEAD
     // onClick - submit search input 
+=======
+    // onClick - submit search input
+>>>>>>> frameworks
     $('#searchButton').on('click', function (event) {
         event.preventDefault(event);
 
@@ -22,7 +26,11 @@ window.onload = function () {
         $('#gitHolder').empty();
         $('#noResults').empty();
 
+<<<<<<< HEAD
         // If - 
+=======
+        // If -
+>>>>>>> frameworks
         if ($('input:text').val().trim() != '') {
             // Variable - defines search input as topic
             var topic = $('input:text').val().trim();
@@ -40,8 +48,13 @@ window.onload = function () {
 
     let getGitHub = function () {
         var queryURL = apiGitHub + queryTopic + queryLanguage;
+<<<<<<< HEAD
         
         $.get(queryUrl, function(data) {
+=======
+
+        $.get(queryUrl, function (data) {
+>>>>>>> frameworks
             var results = data.results;
 
             if (data.code === 'badtopic' || results.length === 0) {
@@ -52,7 +65,11 @@ window.onload = function () {
                     results = data.results;
                     $('#noResults').html('We couldnt find any meetups meeting your search criteria. Heres a few others you may be interested in:' + '<br>' + '<br>')
                     displayGit();
+<<<<<<< HEAD
                 });           
+=======
+                });
+>>>>>>> frameworks
             } else {
                 displayGit();
             };

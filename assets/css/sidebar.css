@@ -43,6 +43,14 @@ body {
     padding: 1em;
 }
 
+<<<<<<< HEAD
+=======
+.sidebar.active {
+	z-index:1000;
+	background: #F5F5F5;
+}
+
+>>>>>>> frameworks
 .sidebar a:hover {
     background: #258ecd;
 }
